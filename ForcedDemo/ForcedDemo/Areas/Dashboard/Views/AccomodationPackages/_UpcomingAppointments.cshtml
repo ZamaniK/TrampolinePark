@@ -1,0 +1,96 @@
+﻿@model ForcedDemo.Entities.AccomodationPackage
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">
+            @{
+                ViewBag.Title = "Upcoming Appointments";
+            }
+
+            <br />
+            <br />
+
+            <strong>Upcomming Appointments</strong>
+
+        </h5>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AccomodationType)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AccomodationType)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FeePerDay)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FeePerDay)
+            </dd>
+            <dt>
+                @Html.DisplayName("Search Patient")
+            </dt>
+            <dd>
+                @using (Html.BeginForm())
+                {
+                    @Html.TextBox("SearchString")
+                    <input type="submit" value="Filter" />
+                }
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Appointments)
+            </dt>
+            <dd>
+                <table class="table">
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>User Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                    @foreach (var item in Model.Appointments)
+                    {
+                        if (item.Date.Date.Add(item.Time.TimeOfDay).CompareTo(DateTime.Now) > 0)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ApplicationUser.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Time)
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </table>
+            </dd>
+        </dl>
+    </div>
+    <p>
+        @*Use the browser's internal history. Otherwise Redirectin to all Appointments*@
+        <a class="navbar-brand" href="@Url.Action("Index","Doctor")">
+            <img src="~/Content/images/arrow2.jpg" alt="Logo" style="height:40px; width:60px;" />
+        </a>
+    </p>
+</div>

@@ -1,0 +1,63 @@
+﻿@model ForcedDemo.ViewModels.ActViewModel
+
+@if (Model.ActivityTypes != null && Model.ActivityTypes.Count() > 0)
+{
+    var i = 0;
+
+    <div id="colorlib-rooms" class="colorlib-light-grey">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
+                    <h2>Activity Types</h2>
+                    <p>Select Activity Type</p>
+                    <p>
+                        @foreach (var accomodationType in Model.ActivityTypes)
+                        {
+                            <button class="btn btn-sm changeAccomodationType" data-id="@accomodationType.ID">
+                                @accomodationType.Name
+                            </button>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            @foreach (var accomodationType in Model.ActivityTypes)
+            {
+                <div data-id="@accomodationType.ID" class="row accomodationTypesRow" style="@(i !=0 ? "display:none" : string.Empty)">
+                    <div class="col-md-12 animate-box">
+                        <div class="owl-carousel owl-carousel2">
+
+                            @foreach (var accomodationPackage in Model.Activities.Where(x => x.ActivityTypeID == accomodationType.ID))
+                            {
+                                var thumbnailPicture = accomodationPackage.ActivityPictures != null && accomodationPackage.ActivityPictures.Count > 0 ? accomodationPackage.ActivityPictures.First() : new ForcedDemo.Entities.ActivityPictures();
+                                var thumbnailURL = thumbnailPicture.Picture != null ? thumbnailPicture.Picture.URL : "default-image.jpg";
+
+                                <div class="item">
+                                    <a href="@Url.Action("Details","Activities", new { area = "", accomodationPackageID = accomodationPackage.ActivitiesId})" class="room" style="background-image: url(/images/site/@thumbnailURL);"></a>
+                                    <div class="desc text-center">
+                                        <h3>
+                                            <a href="@Url.Action("Details","Accomodations", new { area = "", accomodationPackageID = accomodationPackage.ActivitiesId})">
+                                                @accomodationPackage.ActivityName
+                                            </a>
+                                        </h3>
+                                        <p class="price">
+                                            @accomodationPackage.ActivityPrice
+                                        </p>
+                                        <p><a class="btn btn-primary btn-book" href="/ActivityTimer/Index">Book now!</a></p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center animate-box">
+                        <a href="#">View all rooms <i class="icon-arrow-right3"></i></a>
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+    i++;
+}
+<script src="~/Scripts/site.js"></script>

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ForcedDemo.Models.PackBooking.PackageTime>
+    <div class="container">
+        @{
+            ViewBag.Title = "Index";
+        }
+
+        <h2>Index</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.AccomodationPackages.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PackageTimes.PackageTimesId)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccomodationPackages.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PackageTimes.SlotTime)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("PackageBooking","PackageTimer", new { id=item.PackageTimesId })" rel="tooltip" title="View" class="btn btn-info btn-simple btn-xs"><i class="fa fa-address-book"></i></a>
+
+                        <a href="@Url.Action("Delete", "PackageTimer", new { id = item.PackageTimesId })" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>

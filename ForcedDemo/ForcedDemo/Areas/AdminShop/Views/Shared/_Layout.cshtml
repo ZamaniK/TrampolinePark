@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<script src="https://kit.fontawesome.com/6831f52cbb.js" crossorigin="anonymous"></script>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Admin Area</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-topcancel">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/Dashboard/dashboard" class="navbar-brand navLogo"><i class="fa fa-dashboard mr-1"></i></a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/adminshop/pages"><i class="fas fa-file-alt mr-1"></i> Pages</a></li>
+                    @*<li><a href="/shopadmin/pages/EditSidebar">Sidebar</a></li>*@
+                    <li><a href="/adminshop/shop/Categories"><span class="fa fa-list-alt mr-1"></span> Categories</a></li>
+                    <li><a href="/adminshop/shop/Products"><i class="fa fa-product-hunt mr-1"></i> Products</a></li>
+                    <li><a href="/adminshop/shop/Orders"><i class="fa fa-shopping-cart mr-1"></i> Orders</a></li>
+                </ul>
+                <ul class="navbar-right">
+                    <li><a href="/" class="navbar-brand" target="_blank"><i class="fa fa-home mr-1"></i> Trampoline Park</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+    </div>
+
+    @*@Scripts.Render("~/bundles/scripts")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ForcedDemo.Models.ActBooking.ActivityTime>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Activities.ActivityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActivityTimes.ActivityTimesId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activities.ActivityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityTimes.SlotTime)
+            </td>
+            <td>
+                <a href="@Url.Action("ActivityBooking","ActivityTimer", new { id=item.ActivityTimesId })" rel="tooltip" title="View" class="btn btn-info btn-simple btn-xs"><i class="fa fa-address-book"></i></a>
+                <a href="@Url.Action("Details","ActivityTimer", new { id=item.ActivityTimesId })" rel="tooltip" title="View" class="btn btn-info btn-simple btn-xs"><i class="fa fa-eye"></i></a>
+                <a href="@Url.Action("Edit","ActivityTimer", new { id=item.ActivityTimesId })" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs"><i class="fa fa-edit"></i></a>
+                <a href="@Url.Action("Delete", "ActivityTimer", new { id = item.ActivityTimeId })" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,152 @@
+﻿@model ForcedDemo.ViewModels.AccomodationPackageDetailsViewModel
+
+
+@if (Model != null && Model.AccomodationPackage != null)
+{
+    @*@{*@
+    var thumbnailPicture = Model.AccomodationPackage.AccomodationPackagePictures != null && Model.AccomodationPackage.AccomodationPackagePictures.Count > 0 ? Model.AccomodationPackage.AccomodationPackagePictures.First() : new ForcedDemo.Entities.AccomodationPackagePicture();
+    var thumbnailURL = thumbnailPicture.Picture != null ? thumbnailPicture.Picture.URL : "default-image.jpg";
+    @*}*@
+
+
+    <aside id="colorlib-hero">
+        <div class="flexslider">
+            <ul class="slides">
+                <li style="background-image: url(/images/site/@thumbnailURL);">
+                    <div class="overlay"></div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-md-offset-3 slider-text">
+                                <div class="slider-text-inner slider-text-inner2 text-center">
+                                    <h2>
+                                        @Model.AccomodationPackage.AccomodationType.Name
+                                    </h2>
+                                    <h1>
+                                        @Model.AccomodationPackage.Name
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <div id="colorlib-amenities">
+        <div class="container">
+            <div class="row">
+                <div class="amenities-flex">
+                    <div class="desc animate-box">
+                        <p class="price">
+                            <span class="currency">
+                                R
+                            </span>
+                            <span class="price-room">
+                                @Model.AccomodationPackage.FeePerDay
+                            </span>
+                            <span class="per">/ per person</span>
+                        </p>
+                        <strong>
+                            @Model.AccomodationPackage.NoOfPeople Participants Permited.
+                        </strong>
+                        <p>
+                            @Model.AccomodationPackage.Description
+                        </p>
+                    </div>
+
+                    @if (Model.AccomodationPackage.AccomodationPackagePictures != null && Model.AccomodationPackage.AccomodationPackagePictures.Count > 0)
+                    {
+                        foreach (var accomodationPackagePicture in Model.AccomodationPackage.AccomodationPackagePictures)
+                        {
+                            var imagelURL = accomodationPackagePicture.Picture != null ? accomodationPackagePicture.Picture.URL : "default-image.jpg";
+                            <div class="amenities-img animate-box fadeInUp animated-fast" style="height:400px; background-image: url(/images/site/@thumbnailURL)">
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div id="colorlib-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 animate-box">
+                <h3>Confirm Booking</h3>
+            </div>
+            <div class="col-md-10 col-md-offset-1 animate-box">
+                <p><a class="btn btn-primary btn-book" href="/PackageTimer/Index">Book now!</a></p>
+
+                @*<form action="#" id="frmConfirmBooking">
+            <input type="hidden" name="AccomodationPackage" value="@Model.AccomodationPackage.ID" />
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <label for="fname">Check In Date</label>
+                    <input type="text" id="FromDate" name="FromDate" class="form-control" placeholder="Check In Date" autocomplete="off">
+                </div>
+                <div class="col-md-6">
+                    <label for="lname">Duration of The Visit in Hours</label>
+                    <select id="Duration" name="Duration" class="form-control" placeholder="Duration The Visit">
+                        @for (int i = 1; i <= 13; i++)
+                        {
+                            <option value="@i">
+                                @i
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <label for="NumberOfAdults">Number of Adults</label>
+                    <input type="number" id="NumberOfAdults" name="NumberOfAdults" class="form-control" value="1" min="1" max="50">
+                </div>
+                <div class="col-md-6">
+                    <label for="NumberOfChildren">Number of Children</label>
+                    <input type="number" id="NumberOfChildren" name="NumberOfChildren" class="form-control" value="0" min="0" max="250">
+                </div>
+            </div>
+            <div class="row form-group">
+                <h4>Who to cantact if you are not available?</h4>
+                <div class="col-md-6">
+
+                    <label for="fname">Guest Name</label>
+                    <input type="text" id="Name" name="Name" class="form-control" placeholder="Guest Name">
+                </div>
+                <div class="col-md-6">
+                    <label for="email">Email</label>
+                    <input type="text" id="Email" name="Email" class="form-control" placeholder="Your email address">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <label for="message">Add Special Notes</label>
+                    <textarea name="Notes" id="Notes" cols="30" rows="10" class="form-control" placeholder="Add Special Notes"></textarea>
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <input type="button" id="btnCheckAvailability" value="Check Availability" class="btn btn-primary">
+            </div>
+
+        </form>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#FromDate').datepicker({
+        format: 'mm/dd/yyyy',
+        startDate: '+1d'
+    });
+
+    $('#btnCheckAvailability').click(function () {
+        $.ajax({
+            url: '@Url.Action("CheckAvailability", "Accomodations")',
+            data: $("#frmConfirmBooking").serialize()
+        })
+            .done(function (response) {
+                $("#actionModal .modal-dialog").html(response);
+            });
+    });
+</script>

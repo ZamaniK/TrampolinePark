@@ -1,0 +1,126 @@
+﻿@model ForcedDemo.Models.AppointmentModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<br />
+<div class="well well-sm">
+    <strong>Make an Appointment</strong>
+
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserID, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.Label(User.Identity.Name, User.Identity.Name)
+                        @Html.HiddenFor(model => model.UserID)
+                        @Html.ValidationMessageFor(model => model.UserID)
+                    </div>
+                </div>
+                <div class="form-group">
+                        @Html.Label("Accomodation Name", new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.Label((string)ViewBag.DoctorName, new { @class = "control-label col-md-2" })
+                        </div>
+                    </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Date, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Date)
+                        @Html.ValidationMessageFor(model => model.Date)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Time, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("TimeBlockHelper")
+                        @Html.ValidationMessageFor(model => model.Time)
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+
+<div>
+    @*Use the browser's internal history. Otherwise Redirectin to all Appointments*@
+    <a href="javascript:void(0);" onclick="history.go(-1);">Go Back</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#TimeBlockHelper').append($("<option></option>").val("placeholder").text("Select Date"));
+            $('#TimeBlockHelper').val("placeholder");
+            $("#TimeBlockHelper").prop("disabled", true);
+            $("#Date").change(function () {
+                if ($("#Date").val() != "") {
+                    var options = {};
+                    options.url = "/AppointmentModels/GetAvailableAppointments";
+                    options.type = "POST";
+                    options.data = JSON.stringify({ docID: '@Model.AccomodationPackageId', Date: $("#Date").val() });
+                    options.dataType = "json";
+                    options.contentType = "application/json";
+                    options.success = function (data) {
+                        data = $.map(data, function (item, a) {
+                            return "<option value=" + item.Value + ">" + item.Text + "</option>";
+                        });
+
+                        $("#TimeBlockHelper").html(data.join(""));
+                        $("#TimeBlockHelper").prop("disabled", false);
+                    };
+                    options.error = function () { alert("Error retrieving available appointments!"); };
+                    $.ajax(options);
+                }
+                else {
+                    $("#TimeBlockHelper").empty();
+                    $('#TimeBlockHelper').append($("<option></option>").val("placeholder").text("Select Date"));
+                    $('#TimeBlockHelper').val("placeholder");
+                    $("#TimeBlockHelper").prop("disabled", true);
+                }
+            });
+        });
+
+    </script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //$("#Hello").hide();
+            $("#Manufac").change(function () {
+                $.get("/AppointmentModels/GetSProductList", { ServiceID: $("#Manufac").val() }, function (data) {
+                    $("#Toot").empty();
+                    $.each(data, function (index, row) {
+                        $("#Toot").append("<option value='" + row.ServiceID + "'>" + row.servirceName + "</option>")
+                        //$("#Hello").show();
+                    });
+                });
+            })
+        });
+    </script>
+
+
+}
